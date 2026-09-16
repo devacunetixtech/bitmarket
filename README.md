@@ -37,7 +37,7 @@ The deployment and verification record is committed in `deployments/botchain-tes
 
 The app also checks that the wallet is still connected to the authenticated address on chain 968. Disconnecting, changing the active account, or changing networks removes access. The explicit **Disconnect wallet** button clears the server session and returns to the landing page. This disconnects the BitMarket session; wallet extension permissions can be revoked separately in the extension.
 
-`SESSION_SECRET` must contain at least 32 characters. Keep it and deployment/Blockscout keys server-side. Set `AUTH_COOKIE_SECURE=true` on HTTPS deployments. All instances must share the same session secret.
+`SESSION_SECRET` must contain at least 32 characters. Keep it and deployment/Blockscout keys server-side. Set `AUTH_COOKIE_SECURE=true` on HTTPS deployments. All instances must share the same session secret. Set `APP_ORIGIN` to the canonical site origin when deploying behind a reverse proxy.
 
 ## Real marketplace workflow
 

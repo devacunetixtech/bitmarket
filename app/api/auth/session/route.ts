@@ -7,9 +7,10 @@ import {
   SESSION_COOKIE,
   seal,
   unseal,
+  requestOrigin,
 } from "@/lib/session";
 function sameOrigin(request: NextRequest) {
-  return request.headers.get("origin") === request.nextUrl.origin;
+  return request.headers.get("origin") === requestOrigin(request);
 }
 export async function POST(request: NextRequest) {
   if (!sameOrigin(request))
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
     const { message, signature } = await request.json();
     if (
       !nonce ||
-      nonce.origin !== request.nextUrl.origin ||
+      nonce.origin !== requestOrigin(request) ||
       message !== loginMessage(nonce) ||
       typeof signature !== "string" ||
       !/^0x[0-9a-fA-F]{130}$/.test(signature)
@@ -72,5 +73,19 @@ export async function DELETE(request: NextRequest) {
   const response = NextResponse.json({ ok: true });
   for (const name of [SESSION_COOKIE, NONCE_COOKIE])
     response.cookies.set(name, "", { ...cookieOptions, maxAge: 0 });
+  return response;
+}
+export async function GET(request: NextRequest) {
+  const session = await unseal(
+    request.cookies.get(SESSION_COOKIE)?.value,
+    "session",
+  );
+  const response = NextResponse.json(
+    session
+      ? { address: session.address, expiresAt: session.expiresAt }
+      : { error: "Connect your wallet to continue." },
+    { status: session ? 200 : 401 },
+  );
+  response.headers.set("Cache-Control", "no-store");
   return response;
 }

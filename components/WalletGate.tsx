@@ -23,10 +23,15 @@ export default function WalletGate({ address }: { address: `0x${string}` }) {
     const check = async () => {
       try {
         if (!provider) throw new Error();
-        const [accounts, chain] = await Promise.all([
+        const [accounts, chain, sessionResponse] = await Promise.all([
           provider.request({ method: "eth_accounts" }),
           provider.request({ method: "eth_chainId" }),
+          fetch("/api/auth/session", { cache: "no-store" }),
         ]);
+        if (!sessionResponse.ok) throw new Error();
+        const session = await sessionResponse.json();
+        if (session.address?.toLowerCase() !== address.toLowerCase())
+          throw new Error();
         if (
           (accounts as string[])[0]?.toLowerCase() !== address.toLowerCase() ||
           Number(chain) !== 968

@@ -131,7 +131,7 @@ test("landing, favicon, wallet gate and rejection of forged sessions", async ({
     .getByRole("button", { name: "Launch app", exact: true })
     .first()
     .click();
-  await expect(page.getByRole("alert")).toContainText("No wallet found");
+  await expect(page.locator(".landing-error")).toContainText("No wallet found");
   expect(await page.locator(".worker-card").count()).toBe(0);
 });
 test("invalid signature and cross-origin login are rejected", async ({

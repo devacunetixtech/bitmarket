@@ -687,7 +687,7 @@ export default function Marketplace({
                   <span className="orbit-dot dot-two" />
                   <div className="floating-label float-top">
                     <span className="status-dot" />
-                    Autonomous. Always on.
+                    Services, on your terms.
                   </div>
                   <div className="floating-label float-bottom">
                     <Zap size={15} />
@@ -1306,7 +1306,7 @@ export default function Marketplace({
                       Worker name
                       <input
                         name="name"
-                        placeholder="e.g. Atlas Research"
+                        placeholder="Name your service"
                         maxLength={60}
                         required
                       />

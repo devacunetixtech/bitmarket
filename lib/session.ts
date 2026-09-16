@@ -65,3 +65,14 @@ export const cookieOptions = {
   path: "/",
   secure: process.env.AUTH_COOKIE_SECURE === "true",
 };
+// Next.js may normalize nextUrl to localhost; bind signatures to the actual request host.
+export function requestOrigin(request: {
+  headers: Headers;
+  nextUrl: { origin: string; protocol: string };
+}) {
+  if (process.env.APP_ORIGIN) return new URL(process.env.APP_ORIGIN).origin;
+  const host = request.headers.get("host");
+  if (!host || !/^[a-zA-Z0-9.:[\]-]+$/.test(host))
+    throw new Error("Invalid request host");
+  return `${process.env.AUTH_COOKIE_SECURE === "true" ? "https:" : request.nextUrl.protocol}//${host}`;
+}

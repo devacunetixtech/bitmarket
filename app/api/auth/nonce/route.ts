@@ -5,6 +5,7 @@ import {
   loginMessage,
   NONCE_COOKIE,
   seal,
+  requestOrigin,
   type Session,
 } from "@/lib/session";
 export async function GET(request: NextRequest) {
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
     address: getAddress(address),
     purpose: "nonce",
     nonce: crypto.randomUUID(),
-    origin: request.nextUrl.origin,
+    origin: requestOrigin(request),
     expiresAt: Date.now() + 5 * 60 * 1000,
   };
   const response = NextResponse.json({ message: loginMessage(session) });
