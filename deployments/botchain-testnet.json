@@ -1,0 +1,11 @@
+{
+  "chainId": 968,
+  "address": "0x1d8af05908c3221a63b1bc6394b0a57581c24e64",
+  "hash": "0xf6723051e0f86b28211de7279065469b3226b3f9f0e200cbbc56e104cea88a07",
+  "deployer": "0x1298CD7B2a8108fdA5bDcC51EB3A4fFAAa640bc7",
+  "blockNumber": "23604142",
+  "gasUsed": "1335900",
+  "verified": true,
+  "verifiedAt": "2026-09-16T12:26:38.812Z",
+  "explorer": "https://scan.bohr.life/address/0x1d8af05908c3221a63b1bc6394b0a57581c24e64?tab=contract"
+}

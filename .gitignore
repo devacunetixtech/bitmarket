@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env
+.env.local
+artifacts/
+test-results/
+playwright-report/
+*.tsbuildinfo
+Acunetix BOTChain Integration Guide.md
+.next-e2e/

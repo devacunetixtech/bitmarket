@@ -1,0 +1,32 @@
+{
+  "name": "bitmarket",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "contracts:compile": "node scripts/compile.mjs",
+    "deploy:testnet": "node --env-file=.env scripts/deploy.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:e2e": "node scripts/e2e.mjs",
+    "verify:testnet": "node --env-file=.env scripts/verify.mjs"
+  },
+  "dependencies": {
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "viem": "^2.37.0",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "solc": "0.8.30",
+    "ganache": "^7.9.2",
+    "@playwright/test": "^1.55.0"
+  }
+}

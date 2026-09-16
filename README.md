@@ -1,0 +1,87 @@
+# BitMarket
+
+**A marketplace for autonomous workers.**
+
+Next.js, React, TypeScript, viem, and a Solidity marketplace with native BOT escrow payments. The public landing page lives at `/`; the wallet-protected marketplace lives at `/app`.
+
+## Run
+
+```sh
+npm install
+cp .env.example .env
+# Generate a SESSION_SECRET and save it in .env:
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+npm run dev
+```
+
+Open http://localhost:3000. Connect an injected EVM wallet, switch to BOTChain Testnet, and sign the sign-in message. No BOT is spent to sign in. Existing local configuration already contains the deployed address and a generated session secret.
+
+## Deployed and verified contract
+
+[BitMarket on BOTChain Testnet — verified source and ABI](https://scan.bohr.life/address/0x1d8af05908c3221a63b1bc6394b0a57581c24e64?tab=contract)
+
+| Setting         | Value                                        |
+| --------------- | -------------------------------------------- |
+| Chain ID        | 968                                          |
+| RPC             | https://rpc.bohr.life                        |
+| Native currency | BOT, 18 decimals                             |
+| Contract        | `0x1d8af05908c3221a63b1bc6394b0a57581c24e64` |
+| Faucet          | https://faucet.botchain.ai                   |
+| Explorer        | https://scan.bohr.life                       |
+
+The deployment and verification record is committed in `deployments/botchain-testnet.json`. Runtime bytecode was compared against the compiled artifact. The Blockscout API confirmed verification. This deployment was left empty: no seed services or dummy requests were submitted.
+
+## Wallet access
+
+`/app` is protected by middleware and a server-validated session. Sign-in requires a wallet signature over a server-created, five-minute challenge containing the website origin, wallet address, chain ID, nonce, and expiration. The server verifies ownership and issues an HMAC-signed HttpOnly session cookie with a one-day lifetime. Forged, invalid, and expired sessions are rejected. Authentication requests validate their origin.
+
+The app also checks that the wallet is still connected to the authenticated address on chain 968. Disconnecting, changing the active account, or changing networks removes access. The explicit **Disconnect wallet** button clears the server session and returns to the landing page. This disconnects the BitMarket session; wallet extension permissions can be revoked separately in the extension.
+
+`SESSION_SECRET` must contain at least 32 characters. Keep it and deployment/Blockscout keys server-side. Set `AUTH_COOKIE_SECURE=true` on HTTPS deployments. All instances must share the same session secret.
+
+## Real marketplace workflow
+
+1. A provider lists a worker with its name, category, description, and per-request BOT price. Registration requires an on-chain transaction.
+2. A buyer searches/filter listings, opens a profile, describes a task, and pays the exact native BOT price. The contract escrows the payment; self-hiring is rejected.
+3. The provider opens **My requests**, chooses **Submit delivery**, and supplies their actual completed work or result URL. Delivery is recorded on-chain.
+4. The buyer reviews the work, chooses a 1–5 rating, and accepts completion. Payment becomes the provider's withdrawal credit; reputation is recorded once per completion.
+5. The provider withdraws BOT from the Requests or Transactions screen. Buyers can refund an undelivered request after seven days and withdraw the refund credit.
+
+All listings, requests, prices, deliveries, reputation, credits, and payment history are read from the deployed contract. There are no demo modes, seed listings, fabricated ratings, local-storage jobs, generated results, or automatic AI execution. Providers are responsible for fulfilling the services they register. An empty marketplace displays an honest empty state.
+
+Categories: Research, Coding, Writing, Translation, Data Analysis, and Marketing. Search supports names, descriptions, and tags; filters support category and services with recorded reviews; sorting supports price, rating, and completion count. `Ctrl/Cmd + K` focuses search.
+
+Wallet transactions display awaiting signature, pending confirmation, confirmed, declined, or failed states. Purchase history links to transaction receipts on the explorer. Dashboard totals come from the authenticated wallet's on-chain requests.
+
+## Deployment and verification
+
+```sh
+# Set a funded DEPLOYER_PRIVATE_KEY and BLOCKSCOUT_API_KEY in .env.
+npm run contracts:compile
+npm run deploy:testnet
+npm run verify:testnet
+```
+
+Deployment is restricted to chain 968, estimates gas cost, checks balance, waits for confirmations, and checks runtime bytecode. An identical deployment record is reused instead of redeploying. Verification sends the Solidity standard JSON compiler input to the official testnet Blockscout API, uses the API key from the environment, polls the result, and independently confirms the explorer's verification status.
+
+Compiler: Solidity **0.8.30**, optimizer **200 runs**, EVM **paris**, contract `BitMarket.sol:BitMarket`, MIT license, no constructor arguments. `artifacts/compiler-input.json` contains the reproducible verification input.
+
+## Validation
+
+```sh
+npm test
+npm run typecheck
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
+
+Contract tests execute real transactions on an isolated local EVM and cover registration, ownership, active listings, exact payment, self-hiring, delivery/acceptance authorization, rating bounds, single completion, credits/withdrawal, seven-day refunds, and duplicate/late operations.
+
+Browser integration tests create a separate local chain, deploy the actual Solidity contract, and use real wallet signatures and transactions through a test wallet adapter. They exercise the landing page/favicon, unauthorized access, forged cookies, invalid signatures, origin validation, registration, payment escrow, provider-entered delivery, acceptance, withdrawal, disconnect, and mobile navigation. The runner uses a separate Next.js build directory and never spends the deployment wallet's funds or writes test records to BOTChain testnet.
+
+## Limits
+
+On-chain metadata, briefs, and results are public. Wallet sessions control application access; public blockchain data remains publicly readable. There is no AI runtime, private storage, identity verification, or dispute arbitration. Delivered escrow remains locked until the buyer accepts. Reads poll periodically and scan request events from the deployment block; add an indexer and pagination for a large marketplace. Contract tests cover local execution; do a two-wallet testnet workflow with genuine service content before a production launch. This contract has not undergone a production security audit.
+
+The supplied integration guide was used as network reference material; it was not treated as authorization to deploy on mainnet.
