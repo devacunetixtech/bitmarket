@@ -7,11 +7,31 @@ export type Session = {
   nonce?: string;
   origin?: string;
 };
-async function key() {
-  const secret = process.env.SESSION_SECRET;
+export class AuthConfigurationError extends Error {
+  readonly code: string;
+  constructor(code: string, message: string) {
+    super(message);
+    this.code = code;
+    this.name = "AuthConfigurationError";
+  }
+}
+export function assertAuthConfiguration() {
+  const secret = process.env.SESSION_SECRET?.trim();
   if (!secret || secret.length < 32)
-    throw new Error("SESSION_SECRET must contain at least 32 characters");
-  return crypto.subtle.importKey(
+    throw new AuthConfigurationError(
+      "AUTH_SESSION_SECRET_INVALID",
+      "Wallet sign-in is unavailable: SESSION_SECRET must be configured with at least 32 characters in the server deployment environment.",
+    );
+  if (!globalThis.crypto?.subtle)
+    throw new AuthConfigurationError(
+      "AUTH_CRYPTO_UNAVAILABLE",
+      "Wallet sign-in requires a server runtime with Web Crypto support. Use Node.js 22 or newer.",
+    );
+  return secret;
+}
+async function key() {
+  const secret = assertAuthConfiguration();
+  return globalThis.crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(secret),
     { name: "HMAC", hash: "SHA-256" },
@@ -57,7 +77,7 @@ export async function unseal(
   }
 }
 export function loginMessage(session: Session) {
-  return `BitMarket wallet sign-in\n\nWebsite: ${session.origin}\nWallet: ${session.address}\nChain ID: 968\nNonce: ${session.nonce}\nExpires: ${new Date(session.expiresAt).toISOString()}\n\nSign to access BitMarket. This does not authorize a transaction.`;
+  return `BitMarket wallet sign-in\n\nWebsite: ${session.origin}\nWallet: ${session.address}\nChain ID: 677\nNonce: ${session.nonce}\nExpires: ${new Date(session.expiresAt).toISOString()}\n\nSign to access BitMarket. This does not authorize a transaction.`;
 }
 export const cookieOptions = {
   httpOnly: true,
@@ -70,7 +90,27 @@ export function requestOrigin(request: {
   headers: Headers;
   nextUrl: { origin: string; protocol: string };
 }) {
-  if (process.env.APP_ORIGIN) return new URL(process.env.APP_ORIGIN).origin;
+  const configured = process.env.APP_ORIGIN?.trim();
+  if (configured) {
+    try {
+      const origin = new URL(configured);
+      if (
+        !["https:", "http:"].includes(origin.protocol) ||
+        origin.username ||
+        origin.password ||
+        origin.pathname !== "/" ||
+        origin.search ||
+        origin.hash
+      )
+        throw new Error();
+      return origin.origin;
+    } catch {
+      throw new AuthConfigurationError(
+        "AUTH_ORIGIN_INVALID",
+        "Wallet sign-in is unavailable: APP_ORIGIN must be a complete website origin such as https://bitmarket-six.vercel.app, without a path or quotation marks. It can also be left unset.",
+      );
+    }
+  }
   const host = request.headers.get("host");
   if (!host || !/^[a-zA-Z0-9.:[\]-]+$/.test(host))
     throw new Error("Invalid request host");

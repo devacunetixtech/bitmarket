@@ -8,22 +8,23 @@ import {
 import { privateKeyToAccount } from "viem/accounts";
 import { artifact } from "./compile.mjs";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-const rpc = process.env.BOTCHAIN_RPC_URL || "https://rpc.bohr.life";
+const rpc = process.env.BOTCHAIN_RPC_URL || "https://rpc.botchain.ai";
 if (!process.env.DEPLOYER_PRIVATE_KEY)
   throw new Error("Set DEPLOYER_PRIVATE_KEY in .env");
-if (Number(process.env.BOTCHAIN_CHAIN_ID || 968) !== 968)
-  throw new Error("Deployment is restricted to testnet 968");
+if (Number(process.env.BOTCHAIN_CHAIN_ID || 677) !== 677)
+  throw new Error("Deployment is restricted to BOTChain mainnet (677)");
 const chain = defineChain({
-  id: 968,
-  name: "BOTChain Testnet",
+  id: 677,
+  name: "BOTChain Mainnet",
   nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 },
   rpcUrls: { default: { http: [rpc] } },
 });
-const account = privateKeyToAccount(process.env.DEPLOYER_PRIVATE_KEY.trim());
+const rawKey = process.env.DEPLOYER_PRIVATE_KEY.trim();
+const account = privateKeyToAccount(rawKey.startsWith("0x") ? rawKey : `0x${rawKey}`);
 const client = createPublicClient({ chain, transport: http(rpc) });
-if ((await client.getChainId()) !== 968)
-  throw new Error("RPC chain ID does not match testnet");
-const record = "artifacts/deployment-968.json";
+if ((await client.getChainId()) !== 677)
+  throw new Error("RPC chain ID does not match BOTChain mainnet");
+const record = "artifacts/deployment-677.json";
 if (existsSync(record)) {
   const existing = JSON.parse(readFileSync(record));
   const bytecode = await client.getCode({ address: existing.address });
@@ -46,7 +47,7 @@ console.log("Deployer:", account.address);
 console.log("Balance:", formatEther(balance), "BOT");
 console.log("Estimated gas cost:", formatEther(gasLimit * gasPrice), "BOT");
 if (balance < gasLimit * gasPrice)
-  throw new Error("Insufficient testnet BOT for estimated deployment gas");
+  throw new Error("Insufficient BOT for estimated deployment gas");
 const wallet = createWalletClient({ account, chain, transport: http(rpc) });
 const hash = await wallet.deployContract({
   abi: artifact.abi,
@@ -55,8 +56,8 @@ const hash = await wallet.deployContract({
   gasPrice,
 });
 writeFileSync(
-  "artifacts/deployment-pending-968.json",
-  JSON.stringify({ chainId: 968, hash, deployer: account.address }, null, 2),
+  "artifacts/deployment-pending-677.json",
+  JSON.stringify({ chainId: 677, hash, deployer: account.address }, null, 2),
 );
 console.log("Deployment submitted:", hash);
 const receipt = await client.waitForTransactionReceipt({
@@ -73,7 +74,7 @@ writeFileSync(
   record,
   JSON.stringify(
     {
-      chainId: 968,
+      chainId: 677,
       address: receipt.contractAddress,
       hash,
       deployer: account.address,

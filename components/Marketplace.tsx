@@ -293,7 +293,7 @@ export default function Marketplace({
       setLoadError("");
     } catch {
       setLoadError(
-        "Could not load the testnet marketplace. Check your RPC and contract configuration.",
+        "Could not load the mainnet marketplace. Check your RPC and contract configuration.",
       );
     } finally {
       setLoading(false);
@@ -394,7 +394,7 @@ export default function Marketplace({
             functionName: "registerService",
             args: [JSON.stringify(metadata), parseEther(String(price))],
           }),
-        "Worker registered on BOTChain Testnet.",
+        "Worker registered on BOTChain Mainnet.",
       );
       if (receipt) {
         setModal(null);
@@ -569,7 +569,7 @@ export default function Marketplace({
             <div className="user-avatar">Y</div>
             <div>
               <strong>Your workspace</strong>
-              <span>{"Testnet account"}</span>
+              <span>{"Mainnet account"}</span>
             </div>
             <button
               aria-label="Workspace information"
@@ -596,7 +596,7 @@ export default function Marketplace({
           </div>
           <div className="top-actions">
             <span className="network">
-              <i /> BOTChain Testnet
+              <i /> BOTChain Mainnet
             </span>
             <span className="wallet-btn">
               <Wallet size={16} />
@@ -801,7 +801,7 @@ export default function Marketplace({
                     {category !== "All workers" && `in ${category}`}
                   </span>
                   <span>
-                    <i /> {"Native BOT payments · Testnet"}
+                    <i /> {"Native BOT payments · Mainnet"}
                   </span>
                 </div>
                 {loadError && (
@@ -831,7 +831,7 @@ export default function Marketplace({
                     icon={<Search size={28} />}
                     title="No workers found"
                     text={
-                      "Register the first service on your testnet marketplace."
+                      "Register the first service on your mainnet marketplace."
                     }
                     action={() => {
                       setSearch("");
@@ -896,7 +896,7 @@ export default function Marketplace({
           {(view === "My requests" || view === "Transactions") && (
             <>
               <div className="view-toolbar">
-                <span>{"BOTChain testnet workspace"}</span>
+                <span>{"BOTChain mainnet workspace"}</span>
                 {null}
               </div>
               <div className="request-stats">
@@ -1065,8 +1065,8 @@ export default function Marketplace({
                             <a
                               href={
                                 job.hash
-                                  ? `https://scan.bohr.life/tx/${job.hash}`
-                                  : `https://scan.bohr.life/address/${contractAddress}`
+                                  ? `https://scan.botchain.ai/tx/${job.hash}`
+                                  : `https://scan.botchain.ai/address/${contractAddress}`
                               }
                               target="_blank"
                               rel="noreferrer"
@@ -1097,7 +1097,7 @@ export default function Marketplace({
                   }
                   text={
                     !account
-                      ? "Connect a wallet to view your testnet requests and BOT payment history."
+                      ? "Connect a wallet to view your mainnet requests and BOT payment history."
                       : "Your requests and BOT payment history will appear here once you hire a worker."
                   }
                   action={() => navigate("Marketplace")}
@@ -1113,7 +1113,7 @@ export default function Marketplace({
             <div>
               <span className="footer-live">
                 <i />
-                BOTChain Testnet
+                BOTChain Mainnet
               </span>
               <button onClick={() => setModal("help")}>
                 Help center
@@ -1148,7 +1148,7 @@ export default function Marketplace({
             <p>{tx.message}</p>
             {tx.hash && (
               <a
-                href={`https://scan.bohr.life/tx/${tx.hash}`}
+                href={`https://scan.botchain.ai/tx/${tx.hash}`}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -1280,7 +1280,7 @@ export default function Marketplace({
                   </div>
                   <p className="form-note">
                     {
-                      "Testnet BOT is held in escrow until you accept delivery. Undelivered requests are refundable after 7 days. Briefs and results are public on-chain."
+                      "BOT is held in escrow until you accept delivery. Undelivered requests are refundable after 7 days. Briefs and results are public on-chain."
                     }
                   </p>
                 </form>
@@ -1353,7 +1353,7 @@ export default function Marketplace({
                     </label>
                     <div className="registration-network">
                       <i />
-                      {"BOTChain Testnet"}
+                      {"BOTChain Mainnet"}
                       <small>{"On-chain service registration"}</small>
                     </div>
                   </div>
@@ -1367,7 +1367,7 @@ export default function Marketplace({
                     ) : (
                       <Plus size={17} />
                     )}
-                    List worker {"on testnet"}
+                    List worker {"on mainnet"}
                     <ArrowUpRight size={16} />
                   </button>
                   <p className="form-note">
@@ -1496,7 +1496,7 @@ export default function Marketplace({
                     },
                     {
                       title: "Send a brief. Pay in BOT.",
-                      text: "Describe the job. On testnet, native BOT is held safely in the marketplace escrow.",
+                      text: "Describe the job. Native BOT is held safely in the marketplace escrow.",
                     },
                     {
                       title: "Review. Complete. Repeat.",
@@ -1515,7 +1515,7 @@ export default function Marketplace({
                 <p className="info-banner">
                   <Sparkles size={18} />
                   All listings, requests, payments, deliveries, and ratings are
-                  read from BOTChain Testnet.
+                  read from BOTChain Mainnet.
                 </p>
                 <button
                   className="primary full-width"
@@ -1545,26 +1545,26 @@ export default function Marketplace({
                     you can access the app. Disconnecting ends your session. All
                     services and requests are stored on-chain.
                   </p>
-                  <h3>How do testnet payments work?</h3>
+                  <h3>How do mainnet payments work?</h3>
                   <p>
-                    Connect an EVM wallet and switch to BOTChain Testnet (968).
+                    Connect an EVM wallet and switch to BOTChain Mainnet (677).
                     A deployed marketplace contract is required. Payment is
                     escrowed until you approve the delivery. Both providers and
                     buyers withdraw released credits.
                   </p>
                   <h3>What if a worker doesn’t deliver?</h3>
                   <p>
-                    You can refund an undelivered testnet request after 7 days.
+                    You can refund an undelivered request after 7 days.
                     Once delivered, review and accept it to release payment.
                   </p>
                 </div>
                 <div className="help-links">
                   <a
-                    href="https://faucet.botchain.ai"
+                    href="https://dex.botchain.ai"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Get test BOT
+                    Get BOT
                     <ArrowUpRight size={16} />
                   </a>
                   <a

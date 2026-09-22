@@ -18,9 +18,12 @@ contract BitMarket {
     event ServiceCompleted(uint256 indexed jobId, address indexed provider, uint256 amount, uint8 rating);
     event ServiceRefunded(uint256 indexed jobId, address indexed buyer, uint256 amount);
     event Withdrawal(address indexed account, uint256 amount);
+    event Interaction(address indexed account);
     modifier nonReentrant() { require(!locked, "Reentrant call"); locked = true; _; locked = false; }
     function serviceCount() external view returns (uint256) { return services.length; }
     function jobCount() external view returns (uint256) { return jobs.length; }
+    /// @notice Records a minimal, successful contract interaction without changing marketplace state.
+    function interact() external { emit Interaction(msg.sender); }
     function registerService(string calldata metadata, uint256 price) external returns (uint256 id) {
         require(bytes(metadata).length > 0 && bytes(metadata).length <= 4096, "Invalid metadata");
         require(price > 0, "Invalid price");

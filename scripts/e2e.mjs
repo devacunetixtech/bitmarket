@@ -11,7 +11,7 @@ import { privateKeyToAccount } from "viem/accounts";
 import { artifact } from "./compile.mjs";
 const server = ganache.server({
   logging: { quiet: true },
-  chain: { chainId: 968 },
+  chain: { chainId: 677 },
   wallet: { totalAccounts: 3, defaultBalance: 1000 },
 });
 await server.listen(9545, "127.0.0.1");
@@ -20,7 +20,7 @@ try {
     (a) => a.secretKey,
   );
   const chain = defineChain({
-    id: 968,
+    id: 677,
     name: "Isolated BOT EVM",
     nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 },
     rpcUrls: { default: { http: ["http://127.0.0.1:9545"] } },

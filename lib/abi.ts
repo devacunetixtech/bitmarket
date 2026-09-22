@@ -5,6 +5,19 @@ export const marketplaceAbi = [
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "Interaction",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "jobId",
         "type": "uint256"
@@ -245,6 +258,13 @@ export const marketplaceAbi = [
       }
     ],
     "name": "deliverService",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "interact",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

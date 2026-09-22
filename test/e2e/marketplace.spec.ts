@@ -9,7 +9,7 @@ import {
 import { privateKeyToAccount } from "viem/accounts";
 import { marketplaceAbi } from "../../lib/abi";
 const chain = defineChain({
-  id: 968,
+  id: 677,
   name: "Isolated BOT EVM",
   nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 },
   rpcUrls: { default: { http: [process.env.E2E_RPC!] } },
@@ -177,7 +177,7 @@ test("real wallet signatures, registration, escrow, provider delivery, acceptanc
     .getByLabel("Service description")
     .fill("Provider-delivered research and sourced analysis.");
   await form.getByLabel("Price per request (BOT)").fill("0.01");
-  await form.getByRole("button", { name: "List worker on testnet" }).click();
+  await form.getByRole("button", { name: "List worker on mainnet" }).click();
   await expect(
     p.getByRole("heading", { name: "Research service", exact: true }),
   ).toBeVisible();
@@ -197,7 +197,7 @@ test("real wallet signatures, registration, escrow, provider delivery, acceptanc
   await p
     .getByLabel("Delivery content or result URL")
     .fill(
-      "Official configuration: chain ID 968; native currency BOT. Source: https://dev-docs.botchain.ai/docs/Developers/quick-guide/",
+      "Official configuration: chain ID 677; native currency BOT. Source: https://dev-docs.botchain.ai/docs/Developers/quick-guide/",
     );
   await p
     .getByRole("dialog")

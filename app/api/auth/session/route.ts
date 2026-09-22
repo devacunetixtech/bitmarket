@@ -1,3 +1,4 @@
+import { authFailure } from "@/lib/auth-errors";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyMessage } from "viem";
 import {
@@ -8,17 +9,20 @@ import {
   seal,
   unseal,
   requestOrigin,
+  assertAuthConfiguration,
+  AuthConfigurationError,
 } from "@/lib/session";
 function sameOrigin(request: NextRequest) {
   return request.headers.get("origin") === requestOrigin(request);
 }
 export async function POST(request: NextRequest) {
-  if (!sameOrigin(request))
-    return NextResponse.json(
-      { error: "Invalid request origin" },
-      { status: 403 },
-    );
   try {
+    assertAuthConfiguration();
+    if (!sameOrigin(request))
+      return NextResponse.json(
+        { error: "Invalid request origin" },
+        { status: 403 },
+      );
     const nonce = await unseal(
       request.cookies.get(NONCE_COOKIE)?.value,
       "nonce",
@@ -57,7 +61,9 @@ export async function POST(request: NextRequest) {
     );
     response.cookies.set(NONCE_COOKIE, "", { ...cookieOptions, maxAge: 0 });
     return response;
-  } catch {
+  } catch (error) {
+    if (error instanceof AuthConfigurationError)
+      return authFailure(error, "session");
     return NextResponse.json(
       { error: "Invalid wallet signature" },
       { status: 401 },
@@ -65,15 +71,19 @@ export async function POST(request: NextRequest) {
   }
 }
 export async function DELETE(request: NextRequest) {
-  if (!sameOrigin(request))
-    return NextResponse.json(
-      { error: "Invalid request origin" },
-      { status: 403 },
-    );
-  const response = NextResponse.json({ ok: true });
-  for (const name of [SESSION_COOKIE, NONCE_COOKIE])
-    response.cookies.set(name, "", { ...cookieOptions, maxAge: 0 });
-  return response;
+  try {
+    if (!sameOrigin(request))
+      return NextResponse.json(
+        { error: "Invalid request origin" },
+        { status: 403 },
+      );
+    const response = NextResponse.json({ ok: true });
+    for (const name of [SESSION_COOKIE, NONCE_COOKIE])
+      response.cookies.set(name, "", { ...cookieOptions, maxAge: 0 });
+    return response;
+  } catch (error) {
+    return authFailure(error, "disconnect");
+  }
 }
 export async function GET(request: NextRequest) {
   const session = await unseal(

@@ -85,3 +85,13 @@ Browser integration tests create a separate local chain, deploy the actual Solid
 On-chain metadata, briefs, and results are public. Wallet sessions control application access; public blockchain data remains publicly readable. There is no AI runtime, private storage, identity verification, or dispute arbitration. Delivered escrow remains locked until the buyer accepts. Reads poll periodically and scan request events from the deployment block; add an indexer and pagination for a large marketplace. Contract tests cover local execution; do a two-wallet testnet workflow with genuine service content before a production launch. This contract has not undergone a production security audit.
 
 The supplied integration guide was used as network reference material; it was not treated as authorization to deploy on mainnet.
+
+## Wallet sign-in errors on Vercel
+
+If `/api/auth/nonce` fails, inspect Vercel's runtime logs for the authentication error code:
+
+- `AUTH_SESSION_SECRET_INVALID`: set `SESSION_SECRET` to a generated value of at least 32 characters in the deployment's environment. Paste the generated value, not the command or placeholder. Production and Preview scopes are separate.
+- `AUTH_ORIGIN_INVALID`: set `APP_ORIGIN` to the complete website origin (for example, `https://bitmarket-six.vercel.app`), without quotes, paths, or query strings. Alternatively, remove it to derive the origin from the request host. A production-only origin should not be applied to deployments on different preview domains.
+- `AUTH_CRYPTO_UNAVAILABLE`: select a supported Node.js runtime, such as Node.js 22 or newer.
+
+Set `AUTH_COOKIE_SECURE=true` on Vercel. Redeploy after changing variables. Configuration failures return HTTP 503 with a useful JSON error; secret values are never logged. Signing in remains blocked until the configuration is valid.

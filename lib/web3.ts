@@ -7,20 +7,19 @@ import {
   isAddress,
 } from "viem";
 export const botchain = defineChain({
-  id: 968,
-  name: "BOTChain Testnet",
+  id: 677,
+  name: "BOTChain Mainnet",
   nativeCurrency: { name: "BOT", symbol: "BOT", decimals: 18 },
   rpcUrls: {
     default: {
       http: [
-        process.env.NEXT_PUBLIC_BOTCHAIN_RPC_URL || "https://rpc.bohr.life",
+        process.env.NEXT_PUBLIC_BOTCHAIN_RPC_URL || "https://rpc.botchain.ai",
       ],
     },
   },
   blockExplorers: {
-    default: { name: "BOTScan", url: "https://scan.bohr.life" },
+    default: { name: "BOTScan", url: "https://scan.botchain.ai" },
   },
-  testnet: true,
 });
 export const publicClient = createPublicClient({
   chain: botchain,
@@ -57,7 +56,7 @@ export async function connectWallet() {
   });
   const [account] = await wallet.requestAddresses();
   try {
-    await wallet.switchChain({ id: 968 });
+    await wallet.switchChain({ id: 677 });
   } catch (error) {
     if (
       (error as { code?: number }).code !== 4902 &&
@@ -65,7 +64,7 @@ export async function connectWallet() {
     )
       throw error;
     await wallet.addChain({ chain: botchain });
-    await wallet.switchChain({ id: 968 });
+    await wallet.switchChain({ id: 677 });
   }
   return { wallet, account };
 }

@@ -8,10 +8,11 @@
     "start": "next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
     "contracts:compile": "node scripts/compile.mjs",
-    "deploy:testnet": "node --env-file=.env scripts/deploy.mjs",
+    "deploy:mainnet": "node --env-file=.env scripts/deploy.mjs",
     "test": "node --test test/*.test.mjs",
     "test:e2e": "node scripts/e2e.mjs",
-    "verify:testnet": "node --env-file=.env scripts/verify.mjs"
+    "verify:mainnet": "node --env-file=.env scripts/verify.mjs",
+    "interact:mainnet": "node --env-file=.env scripts/interact.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

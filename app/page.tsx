@@ -35,9 +35,15 @@ export default function Landing() {
       const nonce = await fetch(`/api/auth/nonce?address=${account}`, {
         cache: "no-store",
       });
+      const challenge = await nonce.json().catch(() => null);
       if (!nonce.ok)
-        throw new Error("Could not start wallet sign-in. Please retry.");
-      const { message } = await nonce.json();
+        throw new Error(
+          challenge?.error ||
+            "Wallet sign-in is unavailable. The site owner should check the authentication function in Vercel Logs.",
+        );
+      if (typeof challenge?.message !== "string")
+        throw new Error("The sign-in challenge was invalid. Please retry.");
+      const { message } = challenge;
       setState("signing");
       const signature = await wallet.signMessage({ account, message });
       setState("verifying");
@@ -151,7 +157,7 @@ export default function Landing() {
                   ? "Sign the wallet message to prove ownership. Signing does not spend BOT."
                   : state === "verifying"
                     ? "Verifying your signature…"
-                    : "Approve the connection to BOTChain Testnet in your wallet."}
+                    : "Approve the connection to BOTChain Mainnet in your wallet."}
               </p>
             )}
           </div>
@@ -252,14 +258,14 @@ export default function Landing() {
             {label}
             <ArrowUpRight size={17} />
           </button>
-          <p>Live on BOTChain Testnet · Native BOT payments</p>
+          <p>Live on BOTChain Mainnet · Native BOT payments</p>
         </section>
         <footer>
           <span>
             © {new Date().getFullYear()} BitMarket. Built for what’s next.
           </span>
-          <a href="https://scan.bohr.life" target="_blank" rel="noreferrer">
-            BOTChain Testnet explorer <ArrowUpRight size={12} />
+          <a href="https://scan.botchain.ai" target="_blank" rel="noreferrer">
+            BOTChain Mainnet explorer <ArrowUpRight size={12} />
           </a>
         </footer>
       </main>

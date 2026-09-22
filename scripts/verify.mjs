@@ -1,15 +1,15 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import solc from "solc";
-const path = "artifacts/deployment-968.json";
+const path = "artifacts/deployment-677.json";
 const deployment = JSON.parse(readFileSync(path));
-if (deployment.chainId !== 968)
-  throw new Error("Verification is restricted to BOTChain testnet");
+if (deployment.chainId !== 677)
+  throw new Error("Verification is restricted to BOTChain mainnet");
 if (!process.env.BLOCKSCOUT_API_KEY)
   throw new Error("Set BLOCKSCOUT_API_KEY in .env");
-const base = process.env.BOTCHAIN_VERIFIER_URL || "https://scan.bohr.life/api";
+const base = process.env.BOTCHAIN_VERIFIER_URL || "https://scan.botchain.ai/api";
 const url = new URL(base);
-if (url.origin !== "https://scan.bohr.life")
-  throw new Error("Verifier must be the official BOTChain testnet explorer");
+if (url.origin !== "https://scan.botchain.ai")
+  throw new Error("Verifier must be the official BOTChain mainnet explorer");
 async function request(action, fields = {}) {
   const target = new URL(url);
   target.searchParams.set("module", "contract");

@@ -1,0 +1,10 @@
+{
+  "chainId": 677,
+  "address": "0x37d5279cca34ca6a469bd74b6a62e68b8c62dfac",
+  "hash": "0xe51073cbcdcfa46e53d2c5a16390c0cbd985148f8e2b0c53ca53917265828445",
+  "deployer": "0xA4D0349DdeffEe42Afb019105cB55912F7b8e848",
+  "blockNumber": "24177184",
+  "gasUsed": "1356014",
+  "verified": false,
+  "explorer": "https://scan.botchain.ai/address/0x37d5279cca34ca6a469bd74b6a62e68b8c62dfac?tab=contract"
+}

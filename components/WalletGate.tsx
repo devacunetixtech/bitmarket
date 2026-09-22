@@ -34,7 +34,7 @@ export default function WalletGate({ address }: { address: `0x${string}` }) {
           throw new Error();
         if (
           (accounts as string[])[0]?.toLowerCase() !== address.toLowerCase() ||
-          Number(chain) !== 968
+          Number(chain) !== 677
         )
           throw new Error();
         if (alive) setValid(true);
