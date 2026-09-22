@@ -5,6 +5,7 @@
   "deployer": "0xA4D0349DdeffEe42Afb019105cB55912F7b8e848",
   "blockNumber": "24177184",
   "gasUsed": "1356014",
-  "verified": false,
+  "verified": true,
+  "verifiedAt": "2026-09-22T22:50:12.534Z",
   "explorer": "https://scan.botchain.ai/address/0x37d5279cca34ca6a469bd74b6a62e68b8c62dfac?tab=contract"
 }

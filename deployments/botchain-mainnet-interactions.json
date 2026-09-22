@@ -1,0 +1,46 @@
+{
+  "chainId": 677,
+  "contract": "0x37d5279cca34ca6a469bd74b6a62e68b8c62dfac",
+  "wallets": [
+    {
+      "address": "0x04dD549343Ba42Cb13b3406Fbb15D0724daB53e9",
+      "fundingHash": "0x45a5c25806bfeb4762840ed87badebf0fe8665432eb5ce8678f5a6e623f55fba",
+      "interactionHash": "0x84b60151fc4a4ac4c571bdff24f2a54c85ca119b5d18675a080011b08d7fde42",
+      "gasUsed": "22423",
+      "gasPrice": "20000000000",
+      "feeBOT": "0.00044846"
+    },
+    {
+      "address": "0x1263ff2B29d5A75576A8e63De69696ae51e7A761",
+      "fundingHash": "0xef562f4b87c984c7313a4faa4aa1088e5e8b1acf08e0f9b0e57f2768a649144c",
+      "interactionHash": "0x5b35184d0aa21496ec6bb73826b0a06d54bb003692a33a534001fafd74ffe01e",
+      "gasUsed": "22423",
+      "gasPrice": "20000000000",
+      "feeBOT": "0.00044846"
+    },
+    {
+      "address": "0x1F2BDE089C3A9f7d3CA41d83b44E288f87F7B3Ac",
+      "fundingHash": "0x38ad881c5bff0f2b16ae29fe029901ad68df187a60c16627d25dd63027d64bb2",
+      "interactionHash": "0x9af129ffa53abdeb2f86dcc9f4e8e73784ea1c9ca4b28685911cef735e150637",
+      "gasUsed": "22423",
+      "gasPrice": "20000000000",
+      "feeBOT": "0.00044846"
+    },
+    {
+      "address": "0xD5aeEE711Ca0a7622a1964D1D203fFb4D6E9c16a",
+      "fundingHash": "0x6a3a107db5269eb7f1689f3498f2b4448e734c1233c61d31a04d0ee42d36400c",
+      "interactionHash": "0x9dbd9d5fc6a93e5058acea81d2ad9d24291b9066f56ac850b0da2fea333c5123",
+      "gasUsed": "22423",
+      "gasPrice": "20000000000",
+      "feeBOT": "0.00044846"
+    },
+    {
+      "address": "0xD16FD476f69E2c90A5E527C3ca1727d0D9b0300C",
+      "fundingHash": "0x4260b23c81028915ff0d6769b966cdd58499d58cdcc804f7f9b519313b3bb4e6",
+      "interactionHash": "0x80722f641216bfecf957f11c045c8b5d58c92f20fbe1e9446fcf64b71449b244",
+      "gasUsed": "22423",
+      "gasPrice": "20000000000",
+      "feeBOT": "0.00044846"
+    }
+  ]
+}
