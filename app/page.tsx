@@ -264,9 +264,18 @@ export default function Landing() {
           <span>
             © {new Date().getFullYear()} BitMarket. Built for what’s next.
           </span>
-          <a href="https://scan.botchain.ai" target="_blank" rel="noreferrer">
-            BOTChain Mainnet explorer <ArrowUpRight size={12} />
-          </a>
+          <div className="footer-chain-links" aria-label="BOT Chain links">
+            <a href="https://botchain.ai" target="_blank" rel="noreferrer">
+              BOT Chain <ArrowUpRight size={12} />
+            </a>
+            <a
+              href="https://scan.botchain.ai"
+              target="_blank"
+              rel="noreferrer"
+            >
+              BOT Chain Explorer <ArrowUpRight size={12} />
+            </a>
+          </div>
         </footer>
       </main>
     </div>

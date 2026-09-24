@@ -1199,6 +1199,20 @@ footer button {
   padding: 0;
   gap: 4px;
 }
+.footer-chain-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.footer-chain-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #b0906c;
+}
+.footer-chain-links a:hover {
+  color: var(--secondary);
+}
 .footer-live {
   display: flex;
   align-items: center;
@@ -2375,7 +2389,12 @@ footer button {
     gap: 10px;
   }
   footer > div {
-    gap: 0;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .footer-chain-links {
+    gap: 12px;
   }
   .modal-backdrop {
     padding: 15px;
@@ -2847,11 +2866,6 @@ footer button {
 }
 .landing footer {
   padding: 30px 0;
-}
-.landing footer a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 .landing-copy > p.landing-error {
   display: flex;

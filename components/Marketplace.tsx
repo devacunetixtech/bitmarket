@@ -1115,6 +1115,22 @@ export default function Marketplace({
                 <i />
                 BOTChain Mainnet
               </span>
+              <span className="footer-chain-links" aria-label="BOT Chain links">
+                <a
+                  href="https://botchain.ai"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  BOT Chain <ArrowUpRight size={12} />
+                </a>
+                <a
+                  href="https://scan.botchain.ai"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  BOT Chain Explorer <ArrowUpRight size={12} />
+                </a>
+              </span>
               <button onClick={() => setModal("help")}>
                 Help center
                 <ArrowUpRight size={12} />
